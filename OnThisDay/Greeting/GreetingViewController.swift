@@ -28,6 +28,7 @@ class GreetingViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = .systemBackground
     setupStackView(stack: labelStack)
     setupAppNameLabel(appNameLabel)
     setupDescriptionLabel(descriptionLabel)

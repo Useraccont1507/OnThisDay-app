@@ -19,6 +19,6 @@ class GreetingViewModel: GreetingViewModelProtocol {
   }
   
   func moveToMainScreen() {
-    //TODO: moveToMain
+    coordinator.showMainScreen()
   }
 }
