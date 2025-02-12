@@ -35,6 +35,7 @@ class MainViewController: UIViewController {
     navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: true)
     navigationController?.navigationBar.prefersLargeTitles = true
     self.title = "On this day"
+    view.backgroundColor = .systemBackground
     setupSearchTitle(searchTitle)
     setupCollectionView(collectionView)
     setupLargeButtonStackView(largeButtonStack)
@@ -43,6 +44,8 @@ class MainViewController: UIViewController {
     setupSearchButton(searchButton)
     setupOrLabel(orLabel)
     setupShowFavoritesButton(showFavorites)
+    bindSearchTitle()
+    bindCollection()
     bindButtons()
   }
   
@@ -166,7 +169,6 @@ class MainViewController: UIViewController {
     NSLayoutConstraint.activate([
       button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       button.topAnchor.constraint(equalTo: orLabel.bottomAnchor),
-      button.widthAnchor.constraint(equalToConstant: 110),
       button.widthAnchor.constraint(equalTo: searchButton.widthAnchor, multiplier: 0.8)
     ])
   }
@@ -189,6 +191,22 @@ class MainViewController: UIViewController {
   @objc
   private func moveToFavorites() {
     
+  }
+  
+  private func bindSearchTitle() {
+    viewModel.date.bind { date in
+      let dateFormatter = DateFormatter()
+      dateFormatter.calendar = .current
+      dateFormatter.dateFormat = "dd MMMM"
+      let stringDate = dateFormatter.string(from: date)
+      self.searchTitle.text! = "Search for: \(stringDate)"
+    }
+  }
+  
+  private func bindCollection() {
+    viewModel.eventType.bind { type in
+      self.collectionView.reloadData()
+    }
   }
   
   private func bindButtons() {
@@ -231,25 +249,28 @@ class CollectionViewLayout: UICollectionViewFlowLayout {
 
 extension MainViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    5
+    EventType.allCases.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
     var configuration = UIListContentConfiguration.cell()
-    configuration.text = "test"
+    configuration.text = EventType.allCases[indexPath.item].rawValue
     configuration.textProperties.alignment = .center
     configuration.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     cell.contentConfiguration = configuration
     cell.layer.cornerRadius = cell.bounds.height / 2
-    cell.layer.borderColor = UIColor.gray.cgColor
-    cell.layer.borderWidth = 1
+    
+    let isSelected = viewModel.eventType.value == EventType.allCases[indexPath.item]
+    cell.layer.borderColor = isSelected ? UIColor(named: "AccentColor")?.cgColor : UIColor.gray.cgColor
+    cell.layer.borderWidth = isSelected ? 3 : 1
+    
     return cell
   }
 }
 
 extension MainViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    
+    viewModel.selectEventType(fromIndex: indexPath.item)
   }
 }
