@@ -11,17 +11,18 @@ protocol MainViewModelProtocol {
   func selectEventType(fromIndex: Int)
   func chooseDate(from: UIViewController)
   func selectDateNow()
+  func searchEvents()
   func moveToFavorites()
 }
 
 class MainViewModel: MainViewModelProtocol {
-  private let coordinator: CoordinatorProtocol?
+  private let coordinator: CoordinatorProtocol
   
-  var date: Observer<Date> = .init(value: Date.now)
-  var dateType: Observer<DateType> = .init(value: .dateNow)
-  var eventType: Observer<EventType> = .init(value: .all)
+  var date: Observer<Date> = Observer(value: Date.now)
+  var dateType: Observer<DateType> = Observer(value: DateType.dateNow)
+  var eventType: Observer<EventType> = Observer(value: EventType.events)
   
-  init(coordinator: CoordinatorProtocol?) {
+  init(coordinator: CoordinatorProtocol) {
     self.coordinator = coordinator
     addNotificationObserver()
   }
@@ -43,7 +44,7 @@ class MainViewModel: MainViewModelProtocol {
   
   func chooseDate(from: UIViewController) {
     dateType.value = .custom
-    coordinator?.showCalendar(from: from)
+    coordinator.showCalendar(from: from)
   }
   
   func selectDateNow() {
@@ -51,7 +52,11 @@ class MainViewModel: MainViewModelProtocol {
     dateType.value = .dateNow
   }
   
+  func searchEvents() {
+    coordinator.showEvents(withType: eventType.value)
+  }
+  
   func moveToFavorites() {
-    coordinator?.showFavorites()
+    coordinator.showFavorites()
   }
 }

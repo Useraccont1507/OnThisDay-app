@@ -18,7 +18,7 @@ class MainViewController: UIViewController {
   private let orLabel = UILabel()
   private let showFavorites = UIButton()
   
-  private var viewModel: MainViewModel
+  private let viewModel: MainViewModel
   
   init(viewModel: MainViewModel) {
     self.viewModel = viewModel
@@ -32,10 +32,7 @@ class MainViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: true)
-    navigationController?.navigationBar.prefersLargeTitles = true
-    self.title = "On this day"
-    view.backgroundColor = .systemBackground
+    setupViewController()
     setupSearchTitle(searchTitle)
     setupCollectionView(collectionView)
     setupLargeButtonStackView(largeButtonStack)
@@ -54,6 +51,13 @@ class MainViewController: UIViewController {
     calculateLargeButtonCorenerRadius(button: dateNowButton)
     calculateLargeButtonCorenerRadius(button: chooseDateButton)
     calculateSearchButtonCorenerRadius(button: searchButton)
+  }
+  
+  private func setupViewController() {
+    navigationController?.navigationBar.backItem?.setHidesBackButton(true, animated: true)
+    navigationController?.navigationBar.prefersLargeTitles = true
+    self.title = "On this day"
+    view.backgroundColor = .systemBackground
   }
   
   private func setupSearchTitle(_ title: UILabel) {
@@ -185,16 +189,17 @@ class MainViewController: UIViewController {
   
   @objc
   private func moveToSearch() {
-    
+    viewModel.searchEvents()
   }
   
   @objc
   private func moveToFavorites() {
-    
+    viewModel.moveToFavorites()
   }
   
   private func bindSearchTitle() {
-    viewModel.date.bind { date in
+    viewModel.date.bind { [weak self] date in
+      guard let self = self else { return }
       let dateFormatter = DateFormatter()
       dateFormatter.calendar = .current
       dateFormatter.dateFormat = "dd MMMM"
@@ -204,13 +209,15 @@ class MainViewController: UIViewController {
   }
   
   private func bindCollection() {
-    viewModel.eventType.bind { type in
+    viewModel.eventType.bind { [weak self] type in
+      guard let self = self else { return }
       self.collectionView.reloadData()
     }
   }
   
   private func bindButtons() {
-    viewModel.dateType.bind { dateType in
+    viewModel.dateType.bind { [weak self] dateType in
+      guard let self = self else { return }
       if dateType == .custom {
         self.dateNowButton.layer.borderColor = UIColor.gray.cgColor
         self.dateNowButton.layer.borderWidth = 1
