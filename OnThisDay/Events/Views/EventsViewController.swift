@@ -10,7 +10,6 @@ import UIKit
 class EventsViewController: UIViewController {
   
   private let viewModel: EventsViewModel
-  private let indicator = UIActivityIndicatorView(style: .large)
   private let eventsTableView = UITableView()
   
   init(viewModel: EventsViewModel) {
@@ -25,7 +24,6 @@ class EventsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupView()
-    setupIndicator()
     setupTableView(eventsTableView)
     bindTableView()
   }
@@ -35,28 +33,6 @@ class EventsViewController: UIViewController {
     view.backgroundColor = .systemBackground
     navigationController?.navigationBar.prefersLargeTitles = true
     navigationItem.largeTitleDisplayMode = .automatic
-  }
-  
-  private func setupIndicator() {
-    indicator.color = UIColor(named: "AccentColor")
-    indicator.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(indicator)
-    
-    NSLayoutConstraint.activate([
-      indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-    ])
-    
-    indicator.startAnimating()
-  }
-  
-  private func bindIndicator() {
-    viewModel.events.bind { [weak self] value in
-      guard let self = self else { return }
-      if !value.isEmpty {
-        self.indicator.stopAnimating()
-      }
-    }
   }
   
   private func setupTableView(_ table: UITableView) {
