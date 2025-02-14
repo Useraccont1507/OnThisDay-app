@@ -13,7 +13,7 @@ class CalendarViewController: UIViewController {
   private let datePicker = UIDatePicker()
   
   
-  private var viewModel: CalendarViewModel
+  private let viewModel: CalendarViewModel
   
   init(viewModel: CalendarViewModel) {
     self.viewModel = viewModel
