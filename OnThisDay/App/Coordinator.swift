@@ -9,16 +9,20 @@ import UIKit
 
 protocol CoordinatorProtocol {
   func showGreeting()
+  func showMainScreen()
   func showCalendar(from: UIViewController)
+  func dismiss(vc: UIViewController)
+  func showEvents(withType: EventType)
+  func showFavorites()
 }
 
 class Coordinator: CoordinatorProtocol {
   private let navigationController: UINavigationController
   private let builder: BuilderProtocol
+  var selectedDate = Observer<Date>(value: .now)
   
   init(navigationController: UINavigationController, builder: BuilderProtocol) {
     self.navigationController = navigationController
-    navigationController.view.backgroundColor = .systemBackground
     self.builder = builder
   }
   
@@ -27,7 +31,27 @@ class Coordinator: CoordinatorProtocol {
     navigationController.viewControllers = [greeting]
   }
   
+  func showMainScreen() {
+    let mainScreen = builder.buildMainScreen(coordinator: self)
+    self.navigationController.setViewControllers([mainScreen], animated: true)
+  }
+  
   func showCalendar(from: UIViewController) {
-    //TODO:
+    let calendarView = builder.buildCalendarWith(coordinator: self, selectedDate: selectedDate.value)
+    from.present(calendarView, animated: true)
+  }
+  
+  func dismiss(vc: UIViewController) {
+    vc.dismiss(animated: true)
+  }
+  
+  func showEvents(withType: EventType) {
+    let eventsView = builder.buildEvents(eventType: withType, selectedDate: selectedDate.value)
+    navigationController.pushViewController(eventsView, animated: true)
+  }
+  
+  func showFavorites() {
+    let favoritesView = builder.buildFavorites(coordinator: self)
+    navigationController.pushViewController(favoritesView, animated: true)
   }
 }
