@@ -8,10 +8,7 @@
 import Foundation
 
 enum EventType: String, CaseIterable {
-  case all
-  case selected
+  case events
   case births
   case deaths
-  case holidays
-  case events
 }

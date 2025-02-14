@@ -10,7 +10,9 @@ import Foundation
 class Observer<T> {
   var value: T {
     didSet {
-      listener?(value)
+      listeners.forEach { listener in
+        listener(value)
+      }
     }
   }
   
@@ -18,10 +20,10 @@ class Observer<T> {
     self.value = value
   }
   
-  private var listener: ((T) -> Void)?
+  private var listeners: [(T) -> Void] = []
   
   func bind(listener: @escaping (T) -> Void) {
     listener(value)
-    self.listener = listener
+    listeners.append(listener)
   }
 }
