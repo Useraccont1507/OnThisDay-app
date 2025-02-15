@@ -34,7 +34,7 @@ The app supports **light** and **dark** styles.
 
 ## 📸 Screenshots
 <p align="center">
-  <img src="https://github.com/Useraccont1507/MyWeather/blob/main/screenshots.png" alt="Screenshots" width="1000"/>
+  <img src="https://github.com/Useraccont1507/OnThisDay-app/blob/main/Screenshots.jpg" alt="Screenshots" width="1000"/>
 </p>
 
 ## 🚀 Instalation
