@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CoordinatorProtocol {
+protocol RouterProtocol {
   func showGreeting()
   func showMainScreen()
   func showCalendar(from: UIViewController)
@@ -16,12 +16,12 @@ protocol CoordinatorProtocol {
   func showFavorites()
 }
 
-class Coordinator: CoordinatorProtocol {
+class Router: RouterProtocol {
   private let navigationController: UINavigationController
-  private let builder: BuilderProtocol
+  private let builder: AssemblyBuilderProtocol
   var selectedDate = Observer<Date>(value: .now)
   
-  init(navigationController: UINavigationController, builder: BuilderProtocol) {
+  init(navigationController: UINavigationController, builder: AssemblyBuilderProtocol) {
     self.navigationController = navigationController
     self.builder = builder
   }
