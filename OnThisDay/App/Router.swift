@@ -27,17 +27,17 @@ class Router: RouterProtocol {
   }
   
   func showGreeting() {
-    let greeting = builder.buildGreeting(coordinator: self)
+    let greeting = builder.buildGreeting(router: self)
     navigationController.viewControllers = [greeting]
   }
   
   func showMainScreen() {
-    let mainScreen = builder.buildMainScreen(coordinator: self)
+    let mainScreen = builder.buildMainScreen(router: self)
     self.navigationController.setViewControllers([mainScreen], animated: true)
   }
   
   func showCalendar(from: UIViewController) {
-    let calendarView = builder.buildCalendarWith(coordinator: self, selectedDate: selectedDate.value)
+    let calendarView = builder.buildCalendarWith(router: self, selectedDate: selectedDate.value)
     from.present(calendarView, animated: true)
   }
   
@@ -51,7 +51,7 @@ class Router: RouterProtocol {
   }
   
   func showFavorites() {
-    let favoritesView = builder.buildFavorites(coordinator: self)
+    let favoritesView = builder.buildFavorites(router: self)
     navigationController.pushViewController(favoritesView, animated: true)
   }
 }

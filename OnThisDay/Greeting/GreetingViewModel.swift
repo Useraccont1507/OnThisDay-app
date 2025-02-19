@@ -12,13 +12,13 @@ protocol GreetingViewModelProtocol {
 }
 
 class GreetingViewModel: GreetingViewModelProtocol {
-  private let coordinator: CoordinatorProtocol
+  private let router: RouterProtocol
   
-  init(coordinator: CoordinatorProtocol) {
-    self.coordinator = coordinator
+  init(router: RouterProtocol) {
+    self.router = router
   }
   
   func moveToMainScreen() {
-    coordinator.showMainScreen()
+      router.showMainScreen()
   }
 }

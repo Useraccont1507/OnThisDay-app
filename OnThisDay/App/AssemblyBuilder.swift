@@ -8,29 +8,29 @@
 import UIKit
 
 protocol AssemblyBuilderProtocol {
-  func buildGreeting(coordinator: RouterProtocol) -> UIViewController
-  func buildMainScreen(coordinator: RouterProtocol) -> UIViewController
-  func buildCalendarWith(coordinator: RouterProtocol, selectedDate: Date) -> UIViewController
+  func buildGreeting(router: RouterProtocol) -> UIViewController
+  func buildMainScreen(router: RouterProtocol) -> UIViewController
+  func buildCalendarWith(router: RouterProtocol, selectedDate: Date) -> UIViewController
   func buildEvents(eventType: EventType, selectedDate: Date) -> UIViewController
-  func buildFavorites(coordinator: RouterProtocol) -> UIViewController
+  func buildFavorites(router: RouterProtocol) -> UIViewController
 }
 
 class AssemblyBuilder: AssemblyBuilderProtocol {
   private let networkService = NetworkService()
   private let storageService = StorageService()
   
-  func buildGreeting(coordinator: RouterProtocol) -> UIViewController {
-    let viewModel = GreetingViewModel(coordinator: coordinator)
+  func buildGreeting(router: RouterProtocol) -> UIViewController {
+    let viewModel = GreetingViewModel(router: router)
     return GreetingViewController(viewModel: viewModel)
   }
   
-  func buildMainScreen(coordinator: RouterProtocol) -> UIViewController {
-    let viewModel = MainViewModel(coordinator: coordinator)
+  func buildMainScreen(router: RouterProtocol) -> UIViewController {
+    let viewModel = MainViewModel(router: router)
     return MainViewController(viewModel: viewModel)
   }
   
-  func buildCalendarWith(coordinator: RouterProtocol, selectedDate: Date) -> UIViewController {
-    let viewModel = CalendarViewModel(coordinator: coordinator, selectedDate: selectedDate)
+  func buildCalendarWith(router: RouterProtocol, selectedDate: Date) -> UIViewController {
+    let viewModel = CalendarViewModel(router: router, selectedDate: selectedDate)
     return CalendarViewController(viewModel: viewModel)
   }
   
@@ -39,7 +39,7 @@ class AssemblyBuilder: AssemblyBuilderProtocol {
     return EventsViewController(viewModel: viewModel)
   }
   
-  func buildFavorites(coordinator: RouterProtocol) -> UIViewController {
+  func buildFavorites(router: RouterProtocol) -> UIViewController {
     let viewModel = FavoritesViewModel(storage: storageService)
     return FavoritesViewController(viewModel: viewModel)
   }

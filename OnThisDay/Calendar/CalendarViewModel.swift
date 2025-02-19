@@ -8,25 +8,25 @@
 import UIKit
 
 protocol CalendarViewModelProtocol {
-  func updateDate(date: Date, vc: UIViewController)
+    func updateDate(date: Date, vc: UIViewController)
 }
 
 class CalendarViewModel: CalendarViewModelProtocol {
-  private let coordinator: CoordinatorProtocol
-  
-  var selectedDate = Date.now {
-    didSet {
-      NotificationCenter.default.post(name: Notification.Name("date"), object: selectedDate)
+    private let router: RouterProtocol
+    
+    var selectedDate = Date.now {
+        didSet {
+            NotificationCenter.default.post(name: Notification.Name("date"), object: selectedDate)
+        }
     }
-  }
-  
-  init(coordinator: CoordinatorProtocol, selectedDate: Date) {
-    self.coordinator = coordinator
-    self.selectedDate = selectedDate
-  }
-  
-  func updateDate(date: Date, vc: UIViewController) {
-    selectedDate = date
-    coordinator.dismiss(vc: vc)
-  }
+    
+    init(router: RouterProtocol, selectedDate: Date) {
+        self.router = router
+        self.selectedDate = selectedDate
+    }
+    
+    func updateDate(date: Date, vc: UIViewController) {
+        selectedDate = date
+        router.dismiss(vc: vc)
+    }
 }
